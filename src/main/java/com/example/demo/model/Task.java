@@ -4,8 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "tasks") // explicitly name table
 public class Task {
 
     @Id
@@ -16,15 +18,18 @@ public class Task {
     private String description;
     private boolean completed = false;
 
+    // Default constructor (needed by JPA)
     public Task() {
     }
 
+    // Convenience constructor
     public Task(String title, String description, boolean completed) {
         this.title = title;
         this.description = description;
         this.completed = completed;
     }
 
+    // --- Getters & Setters ---
     public Long getId() {
         return id;
     }
