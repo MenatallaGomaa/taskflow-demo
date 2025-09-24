@@ -4,14 +4,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tasks") // explicitly name table
 public class Task {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO) // ✅ AUTO works better with H2
     private Long id;
 
     private String title;
@@ -22,14 +20,22 @@ public class Task {
     public Task() {
     }
 
-    // Convenience constructor
+    // Constructor without ID (for creating new tasks)
     public Task(String title, String description, boolean completed) {
         this.title = title;
         this.description = description;
         this.completed = completed;
     }
 
-    // --- Getters & Setters ---
+    // Constructor with ID (optional, useful for testing or updates)
+    public Task(Long id, String title, String description, boolean completed) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.completed = completed;
+    }
+
+    // --- Getters and Setters ---
     public Long getId() {
         return id;
     }

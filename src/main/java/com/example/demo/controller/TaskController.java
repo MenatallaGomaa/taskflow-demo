@@ -2,45 +2,43 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Task;
 import com.example.demo.repository.TaskRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/tasks")
-@CrossOrigin(origins = "http://localhost:4200") // Allow Angular dev server to call backend
+@CrossOrigin(origins = "http://localhost:4200") // Allow Angular frontend
 public class TaskController {
 
-    @Autowired
-    private TaskRepository taskRepository;
+    private final TaskRepository taskRepository;
 
-    // READ: Get all tasks
+    public TaskController(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
+    }
+
     @GetMapping
-    public List<Task> getAllTasks() {
+    public List<Task> getTasks() {
         return taskRepository.findAll();
     }
 
-    // CREATE: Add new task
     @PostMapping
-    public Task createTask(@RequestBody Task task) {
+    public Task addTask(@RequestBody Task task) {
         return taskRepository.save(task);
     }
 
-    // UPDATE: Edit task
     @PutMapping("/{id}")
-    public Task updateTask(@PathVariable Long id, @RequestBody Task taskDetails) {
-        Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
-
-        task.setTitle(taskDetails.getTitle());
-        task.setDescription(taskDetails.getDescription());
-        task.setCompleted(taskDetails.isCompleted());
-
-        return taskRepository.save(task);
+    public Task updateTask(@PathVariable Long id, @RequestBody Task updatedTask) {
+        return taskRepository.findById(id)
+                .map(task -> {
+                    task.setTitle(updatedTask.getTitle());
+                    task.setDescription(updatedTask.getDescription());
+                    task.setCompleted(updatedTask.isCompleted());
+                    return taskRepository.save(task);
+                })
+                .orElseThrow(() -> new RuntimeException("Task not found with id " + id));
     }
 
-    // DELETE: Remove task
     @DeleteMapping("/{id}")
     public void deleteTask(@PathVariable Long id) {
         taskRepository.deleteById(id);
