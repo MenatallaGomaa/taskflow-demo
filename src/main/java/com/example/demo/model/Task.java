@@ -9,25 +9,23 @@ import jakarta.persistence.Id;
 public class Task {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // ✅ AUTO works better with H2
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String title;
     private String description;
     private boolean completed = false;
 
-    // Default constructor (needed by JPA)
+    // Default constructor
     public Task() {
     }
 
-    // Constructor without ID (for creating new tasks)
     public Task(String title, String description, boolean completed) {
         this.title = title;
         this.description = description;
         this.completed = completed;
     }
 
-    // Constructor with ID (optional, useful for testing or updates)
     public Task(Long id, String title, String description, boolean completed) {
         this.id = id;
         this.title = title;
