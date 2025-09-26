@@ -8,7 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/tasks")
-@CrossOrigin(origins = "http://localhost:4200") // ✅ allow Angular frontend
+@CrossOrigin(origins = "http://localhost:4200") // allow Angular frontend
 public class TaskController {
 
     private final TaskRepository taskRepository;
@@ -32,14 +32,14 @@ public class TaskController {
     // Create new task
     @PostMapping
     public Task addTask(@RequestBody Task task) {
-        task.setId(null); // ✅ ensure ID is generated
+        task.setId(null); // ensure ID is generated
         return taskRepository.save(task);
     }
 
     // Update existing task
     @PutMapping("/{id}")
     public Task updateTask(@PathVariable Long id, @RequestBody Task task) {
-        task.setId(id); // ✅ ensure correct ID
+        task.setId(id); // ensure correct ID
         return taskRepository.save(task);
     }
 

@@ -8,6 +8,6 @@ public class HelloController {
 
     @GetMapping("/hello")
     public String hello() {
-        return "Hello, TaskFlow is running 🚀";
+        return "Hello, TaskFlow is running";
     }
 }
